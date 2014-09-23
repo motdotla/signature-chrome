@@ -22,6 +22,23 @@ module.exports = (grunt) ->
 
     grunt.file.write("src/signature-chrome/css.js", combined)
 
+  i8nSetValues = (original_src, language_code) ->
+    en_i8n  = grunt.file.readJSON("locales/en.json")
+    i8n     = grunt.file.readJSON("locales/#{language_code}.json")
+    i8n     = grunt.util._.extend(en_i8n, i8n)
+
+    src = original_src
+    src = src.replace "i8n.done_confirmation_msg", i8n.done_confirmation_msg
+    src = src.replace "i8n.done_msg", i8n.done_msg
+    src = src.replace "i8n.done", i8n.done
+    src = src.replace "i8n.yes", i8n.yes
+    src = src.replace "i8n.no", i8n.no
+    src = src.replace "i8n.prompt_text", i8n.prompt_text
+    src = src.replace "i8n.processing_document", i8n.processing_document
+    src = src.replace "i8n.wait_patiently", i8n.wait_patiently
+    src = src.replace "i8n.download", i8n.download
+    src
+
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
     banner: "/*! <%= pkg.name %>.js - <%= pkg.version %> - <%= grunt.template.today(\"yyyy-mm-dd\") %> - <%= pkg.author %> */\n"
@@ -31,14 +48,26 @@ module.exports = (grunt) ->
       en:
         src: "build/signature-chrome.js"
         dest: "build/signature-chrome.min.js"
+      fr:
+        src: "build/signature-chrome.fr.js"
+        dest: "build/signature-chrome.fr.min.js"
     concat:
       options:
         banner: "<%= banner %>"
         separator: '\n\n'
         stripBanners : true
       en:
+        options:
+          process: (src, filepath) ->
+            i8nSetValues(src, "en")
         src: ["src/libs/microevent.js", "src/libs/fabric.js", "src/extensions/*.js", "src/signature-chrome.js", "src/signature-chrome/*.js"]
         dest: "build/signature-chrome.js"
+      fr:
+        options:
+          process: (src, filepath) ->
+            i8nSetValues(src, "fr")
+        src: ["src/libs/microevent.js", "src/libs/fabric.js", "src/extensions/*.js", "src/signature-chrome.js", "src/signature-chrome/*.js"]
+        dest: "build/signature-chrome.fr.js"
     jshint:
       all: ['src/signature-chrome.js', 'src/signature-chrome/*.js']
     connect:
