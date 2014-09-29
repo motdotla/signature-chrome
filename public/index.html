@@ -11,6 +11,19 @@
   <script>
     var body = document.getElementsByTagName('body')[0];
     signature_chrome.init(body);
+
+    signature_chrome.bind('done.clicked', function(result) {
+      console.log('done.clicked', result);
+    });
+    signature_chrome.bind('text_mode.clicked', function(result) {
+      console.log('text_mode.clicked', result);
+    });
+    signature_chrome.bind('sign_mode.clicked', function(result) {
+      console.log('sign_mode.clicked', result);
+    });
+    signature_chrome.bind('trash_mode.clicked', function(result) {
+      console.log('trash_mode.clicked', result);
+    });
   </script>
 </body>
 </html>

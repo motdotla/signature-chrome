@@ -1,20 +1,44 @@
 (function(exports){
 
+  var CLICK             = "click";
+  var TOUCH_SUPPORTED   = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) ? true : false;
+  if (!!TOUCH_SUPPORTED) {     
+    CLICK               = "touchend";
+  }
+  var EVENT_DONE_CLICKED = "done.clicked";
+  var EVENT_TEXT_MODE_CLICKED = "text_mode.clicked";
+  var EVENT_SIGN_MODE_CLICKED = "sign_mode.clicked";
+  var EVENT_TRASH_MODE_CLICKED = "trash_mode.clicked";
+
   var SignatureChrome = function() {
-    this.document_element   = null;
     this.signature_nav_btns = [];
+    this.mode = undefined;
     return this;
   };
 
   SignatureChrome.prototype.init = function(document_element) {
-    // do something
-    this.document_element = document_element;
     this._drawCss();
-    this._drawNav();
-    this._drawDoneNav();
+    this._drawNav(document_element);
+    this._drawDoneNav(document_element);
+
+    var _this = this;
+
+    // event triggers
+    this.done_btn.addEventListener(CLICK, function() {
+      _this.trigger(EVENT_DONE_CLICKED, {}); 
+    }, false);
+    this.text_mode_btn.addEventListener(CLICK, function() {
+      _this.trigger(EVENT_TEXT_MODE_CLICKED, {});
+    }, false);
+    this.sign_mode_btn.addEventListener(CLICK, function() {
+      _this.trigger(EVENT_SIGN_MODE_CLICKED, {});
+    }, false);
+    this.trash_mode_btn.addEventListener(CLICK, function() {
+      _this.trigger(EVENT_TRASH_MODE_CLICKED, {});
+    }, false);
   };
 
-  SignatureChrome.prototype._drawDoneNav = function() {
+  SignatureChrome.prototype._drawDoneNav = function(document_element) {
     this.done_nav                 = document.createElement('nav');
     this.done_nav.className       = "signature-done-nav";
     this.done_nav.id              = "signature-done-nav-"+this.uuid;
@@ -28,10 +52,11 @@
     done_nav_ul.appendChild(done_nav_li);
     this.done_nav.appendChild(done_nav_ul);
 
-    return this.document_element.appendChild(this.done_nav);
+
+    return document_element.appendChild(this.done_nav);
   };
 
-  SignatureChrome.prototype._drawNav = function() {
+  SignatureChrome.prototype._drawNav = function(document_element) {
     this.header                   = document.createElement('header');
     this.header.className         = "signature-header";
     this.header.id                = "signature-header"+this.uuid; 
@@ -77,12 +102,12 @@
 
     this.nav.appendChild(nav_ul);   
     this.header.appendChild(this.nav);
-    return this.document_element.appendChild(this.header);
+    return document_element.appendChild(this.header);
   };
 
+  MicroEvent.mixin(SignatureChrome);
   exports.SignatureChrome = SignatureChrome;
 
 }(this));
 
-MicroEvent.mixin(SignatureChrome);
 var signature_chrome = new SignatureChrome();
