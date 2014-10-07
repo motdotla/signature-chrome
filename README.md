@@ -1,39 +1,17 @@
-Maybe I just manage state in the library itself. In this library. Then I can simply send a state.change event to jafja when that happens. Then I'm less dependent on clicks, etc. 
-
-So, I need internally a JS state machine for this part.
-
-WHAT IF ALL IT DID WAS EXPOSE THE DOM OBJECTS. THEN I BUILD MY OWN EVENTS OFF THOSE DOM OBJECTS IN A SEPARATE LIBRARY - CLICKS, ETC.
-
-THEN THERE IS STILL THE MATTER OF STATE, but maybe this events library would handle state? Or maybe the events is just like my central pipeline log. And everything else subscribes to that, to determine state. 
-
-What are my different states. 
-
-edit_mode (undefined_mode)
-- when you tap, and scroll it doesn't effect anything.
-- you can still drag items around
-text_mode
-- where you tap prompts the text box. text_box.show
-sign_mode
-- where you tap prompts the sign box. signature_pad.show
-confirm_mode
-- it covers everything else.
-signed_mode
-- 
-
-so, shouldn't there be a repo that is signature-state, tracking all this.
-
-
-provide the event queue, this should pass into. it should be an active microevent. Literally a basic class wrapped by microevent. Then, you can send events to the queue. That way you actually have a centralized queue receiving sending out all events. Then you bind to that centralized queue to catch events. That events queue acts as a log. Then everyone else pub/subs on that log by choosing the events they want to watch. 
-
 # signature-chrome
 
 <img src="https://raw.githubusercontent.com/motdotla/signature-chrome/master/signature-chrome.png" alt="signature-chrome" align="right" width="220" />
 
 ```html
 <script src="/path/to/signature-chrome.js"></script>
+<script src="/path/to/jafja.js"></script>
 <script>
   var body = document.getElementsByTagName('body')[0];
+  signature_chrome.jafja = jafja;
   signature_chrome.init(body);
+  signature_chrome.jafja.bind('state.changed', function(result) {
+    console.log('state.changed', result);
+  });
 </script>
 ```
 
@@ -46,15 +24,31 @@ var body = document.getElementsByTagName('body')[0];
 signature_chrome.init(body);
 ```
 
+### jafja
+
+```javascript
+signature_chrome.jafja = jafja
+```
+
+Set jafja to a [jafja](https://github.com/motdotla/jafja) object.
+
 This exposes a series of events you can bind to.
 
 ### Events
 
-#### done.clicked
+#### state.changed
 
 ```javascript
-signature_chrome.bind('done.clicked', function(result) {
-  console.log('done.clicked', result);
+signature_chrome.bind('state.changed', function(result) {
+  console.log('state.changed', result);
+});
+```
+
+#### done_mode.clicked
+
+```javascript
+signature_chrome.bind('done_mode.clicked', function(result) {
+  console.log('done_mode.clicked', result);
 });
 ```
 
