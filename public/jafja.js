@@ -1,14 +1,4 @@
-/**
- * MicroEvent - to make any js object an event emitter (server or browser)
- * 
- * - pure javascript - server compatible, browser compatible
- * - dont rely on the browser doms
- * - super simple - you get it immediatly, no mistery, no magic involved
- *
- * - create a MicroEventDebug with goodies to debug
- *   - make it safer to use
-*/
-
+/*! jafja.js - 0.0.1 - 2014-09-30 - mot */
 var MicroEvent  = function(){};
 MicroEvent.prototype  = {
   bind  : function(event, fct){
@@ -52,3 +42,15 @@ MicroEvent.mixin  = function(destObject){
 if( typeof module !== "undefined" && ('exports' in module)){
   module.exports  = MicroEvent;
 }
+
+
+(function(exports){
+  var Jafja = function() {
+    return this;
+  };
+
+  MicroEvent.mixin(Jafja);
+  exports.Jafja = Jafja;
+}(this));
+
+var jafja = new Jafja();

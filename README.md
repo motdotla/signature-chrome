@@ -1,3 +1,7 @@
+Maybe I just manage state in the library itself. In this library. Then I can simply send a state.change event to jafja when that happens. Then I'm less dependent on clicks, etc. 
+
+So, I need internally a JS state machine for this part.
+
 WHAT IF ALL IT DID WAS EXPOSE THE DOM OBJECTS. THEN I BUILD MY OWN EVENTS OFF THOSE DOM OBJECTS IN A SEPARATE LIBRARY - CLICKS, ETC.
 
 THEN THERE IS STILL THE MATTER OF STATE, but maybe this events library would handle state? Or maybe the events is just like my central pipeline log. And everything else subscribes to that, to determine state. 

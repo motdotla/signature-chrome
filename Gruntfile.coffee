@@ -60,7 +60,7 @@ module.exports = (grunt) ->
         options:
           process: (src, filepath) ->
             i8nSetValues(src, "en")
-        src: ["src/libs/microevent.js", "src/libs/fabric.js", "src/extensions/*.js", "src/signature-chrome.js", "src/signature-chrome/*.js"]
+        src: ["src/libs/*.js", "src/signature-chrome.js", "src/signature-chrome/*.js"]
         dest: "build/signature-chrome.js"
       fr:
         options:
