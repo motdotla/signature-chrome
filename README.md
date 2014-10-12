@@ -30,6 +30,12 @@ signature_chrome.init(body);
 signature_chrome.promptText();
 ```
 
+### promptSignature()
+
+```javascript
+signature_chrome.promptSignature();
+```
+
 ### jafja
 
 ```javascript
@@ -55,6 +61,14 @@ jafja.bind('signature_chrome.state.changed', function(result) {
 ```javascript
 jafja.bind('signature_chrome.text', function(result) {
   console.log('signature_chrome.text', result);
+});
+```
+
+#### signature_chrome.signature
+
+```javascript
+jafja.bind('signature_chrome.signature', function(result) {
+  console.log('signature_chrome.signature', result);
 });
 ```
 
