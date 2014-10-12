@@ -10,11 +10,11 @@
   var TEXT_MODE = "text_mode";
   var SIGN_MODE = "sign_mode";
   var TRASH_MODE = "trash_mode";
-  var EVENT_DONE_MODE_CLICKED = DONE_MODE+".clicked";
-  var EVENT_TEXT_MODE_CLICKED = TEXT_MODE+".clicked";
-  var EVENT_SIGN_MODE_CLICKED = SIGN_MODE+".clicked";
-  var EVENT_TRASH_MODE_CLICKED = TRASH_MODE+".clicked";
-  var STATE_CHANGED = "state.changed";
+  var EVENT_DONE_MODE_CLICKED = "signature_chrome"+DONE_MODE+".clicked";
+  var EVENT_TEXT_MODE_CLICKED = "signature_chrome"+TEXT_MODE+".clicked";
+  var EVENT_SIGN_MODE_CLICKED = "signature_chrome"+SIGN_MODE+".clicked";
+  var EVENT_TRASH_MODE_CLICKED = "signature_chrome"+TRASH_MODE+".clicked";
+  var STATE_CHANGED = "signature_chrome.state.changed";
 
   var SignatureChrome = function() {
     this.signature_nav_btns = [];

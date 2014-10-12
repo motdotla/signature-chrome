@@ -14,8 +14,8 @@
     signature_chrome.jafja = jafja;
     signature_chrome.init(body);
 
-    signature_chrome.jafja.bind('state.changed', function(result) {
-      console.log('state.changed', result);
+    jafja.bind('signature_chrome.state.changed', function(result) {
+      console.log('signature_chrome.state.changed', result);
     });
   </script>
 </body>

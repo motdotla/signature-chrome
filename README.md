@@ -9,7 +9,7 @@
   var body = document.getElementsByTagName('body')[0];
   signature_chrome.jafja = jafja;
   signature_chrome.init(body);
-  signature_chrome.jafja.bind('state.changed', function(result) {
+  jafja.bind('signature_chrome.state.changed', function(result) {
     console.log('state.changed', result);
   });
 </script>
@@ -36,42 +36,42 @@ This exposes a series of events you can bind to.
 
 ### Events
 
-#### state.changed
+#### signature_chrome.state.changed
 
 ```javascript
-signature_chrome.bind('state.changed', function(result) {
-  console.log('state.changed', result);
+jafja.bind('signature_chrome.state.changed', function(result) {
+  console.log('signature_chrome.state.changed', result);
 });
 ```
 
-#### done_mode.clicked
+#### signature_chrome.done_mode.clicked
 
 ```javascript
-signature_chrome.bind('done_mode.clicked', function(result) {
-  console.log('done_mode.clicked', result);
+jafja.bind('signature_chrome.done_mode.clicked', function(result) {
+  console.log('signature_chrome.done_mode.clicked', result);
 });
 ```
 
-#### text_mode.clicked
+#### signature_chrome.text_mode.clicked
 
 ```javascript
-signature_chrome.bind('text_mode.clicked', function(result) {
-  console.log('text_mode.clicked', result);
+jafja.bind('signature_chrome.text_mode.clicked', function(result) {
+  console.log('signature_chrome.text_mode.clicked', result);
 });
 ```
 
-#### sign_mode.clicked
+#### signature_chrome.sign_mode.clicked
 
 ```javascript
-signature_chrome.bind('sign_mode.clicked', function(result) {
-  console.log('sign_mode.clicked', result);
+jafja.bind('signature_chrome.sign_mode.clicked', function(result) {
+  console.log('signature_chrome.sign_mode.clicked', result);
 });
 ```
 
-#### trash_mode.clicked
+#### signature_chrome.trash_mode.clicked
 
 ```javascript
-signature_chrome.bind('trash_mode.clicked', function(result) {
-  console.log('trash_mode.clicked', result);
+jafja.bind('signature_chrome.trash_mode.clicked', function(result) {
+  console.log('signature_chrome.trash_mode.clicked', result);
 });
 ```
