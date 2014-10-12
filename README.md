@@ -24,6 +24,12 @@ var body = document.getElementsByTagName('body')[0];
 signature_chrome.init(body);
 ```
 
+### promptText()
+
+```javascript
+signature_chrome.promptText();
+```
+
 ### jafja
 
 ```javascript
@@ -41,6 +47,14 @@ This exposes a series of events you can bind to.
 ```javascript
 jafja.bind('signature_chrome.state.changed', function(result) {
   console.log('signature_chrome.state.changed', result);
+});
+```
+
+#### signature_chrome.text
+
+```javascript
+jafja.bind('signature_chrome.text', function(result) {
+  console.log('signature_chrome.text', result);
 });
 ```
 

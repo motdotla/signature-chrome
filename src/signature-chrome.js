@@ -14,7 +14,8 @@
   var EVENT_TEXT_MODE_CLICKED = "signature_chrome"+TEXT_MODE+".clicked";
   var EVENT_SIGN_MODE_CLICKED = "signature_chrome"+SIGN_MODE+".clicked";
   var EVENT_TRASH_MODE_CLICKED = "signature_chrome"+TRASH_MODE+".clicked";
-  var STATE_CHANGED = "signature_chrome.state.changed";
+  var EVENT_STATE_CHANGED = "signature_chrome.state.changed";
+  var EVENT_TEXT = "signature_chrome.text";
 
   var SignatureChrome = function() {
     this.signature_nav_btns = [];
@@ -28,12 +29,12 @@
     var old_state = _this.state;
     _this.state = new_state;
 
-    _this.jafja.trigger(STATE_CHANGED, {previous: old_state, current: _this.state});
+    _this.jafja.trigger(EVENT_STATE_CHANGED, {previous: old_state, current: _this.state});
   };
 
   SignatureChrome.prototype._watchStateAndChangeCss = function(document_element) {
     var _this = this;
-    this.jafja.bind(STATE_CHANGED, function(result) {
+    this.jafja.bind(EVENT_STATE_CHANGED, function(result) {
       _this.removeClass(document_element, result.previous);
       _this.addClass(document_element, result.current);
     });
@@ -161,6 +162,15 @@
     this.nav.appendChild(nav_ul);   
     this.header.appendChild(this.nav);
     return document_element.appendChild(this.header);
+  };
+
+  SignatureChrome.prototype.promptText = function() {
+    var _this = this;
+    var text = prompt('i8n.prompt_text', '');
+
+    if (!!text) {
+      _this.jafja.trigger(EVENT_TEXT, text);
+    }
   };
 
   SignatureChrome.prototype.hasClass = function(el, name) {
