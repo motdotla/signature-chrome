@@ -1,10 +1,9 @@
 module.exports = (grunt) ->
   # custom task to embed css into the view
   grunt.registerTask 'embedcss', 'Embed CSS.', ->
-    sqwish          = require('sqwish')
-
-    src             = grunt.file.read("src/css/application.css")
-    minified_css    = sqwish.minify(src)
+    sqwish            = require('sqwish')
+    src               = grunt.file.read("src/css/application.css")
+    minified_css      = sqwish.minify(src)
 
     combined = "(function(SignatureChrome){" +
       "SignatureChrome.prototype._drawCss = function() {" +
@@ -66,7 +65,7 @@ module.exports = (grunt) ->
         options:
           process: (src, filepath) ->
             i8nSetValues(src, "fr")
-        src: ["src/libs/microevent.js", "src/libs/fabric.js", "src/extensions/*.js", "src/signature-chrome.js", "src/signature-chrome/*.js"]
+        src: ["src/libs/*.js", "src/signature-chrome.js", "src/signature-chrome/*.js"]
         dest: "build/signature-chrome.fr.js"
     jshint:
       all: ['src/signature-chrome.js', 'src/signature-chrome/*.js']
