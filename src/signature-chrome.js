@@ -66,11 +66,7 @@
       }
     });
     _this.jafja.bind(EVENT_TRASH_MODE_CLICKED, function() {
-      if (_this.state == TRASH_MODE) {
         _this.setState(document_element, EDIT_MODE);
-      } else {
-        _this.setState(document_element, TRASH_MODE);
-      }
     });
     _this.jafja.bind(EVENT_CONFIRMATION_NO_CLICKED, function() {
       _this.setState(document_element, EDIT_MODE);
@@ -99,7 +95,9 @@
       _this.jafja.trigger(EVENT_SIGN_MODE_CLICKED, {});
     }, false);
     this.trash_mode_btn.addEventListener(CLICK, function() {
-      _this.jafja.trigger(EVENT_TRASH_MODE_CLICKED, {});
+       if (_this.state == TRASH_MODE) {
+        _this.jafja.trigger(EVENT_TRASH_MODE_CLICKED, {});
+      }
     }, false);
     this.done_confirmation_no.addEventListener(CLICK, function() {
       _this.jafja.trigger(EVENT_CONFIRMATION_NO_CLICKED, {});
@@ -187,7 +185,7 @@
     // trash btn
     var li3    = document.createElement("li"); 
     this.trash_mode_btn = document.createElement("a");
-    this.trash_mode_btn.className = "signature-nav-btn signature-nav-disabled";
+    this.trash_mode_btn.className = "signature-nav-btn signature-nav-"+TRASH_MODE;
     this.signature_nav_btns.push(this.trash_mode_btn);
     var span3  = document.createElement("span"); 
     span3.className = "signature-nav-span fa fa-trash";

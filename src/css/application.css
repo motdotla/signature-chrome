@@ -57,6 +57,12 @@
   color: #fff;
   background: #222;
 }
+.signature-nav-trash_mode, .signature-nav-trash_mode {
+  color: rgba(255,255,255,0.5);
+}
+.trash_mode .signature-nav-trash_mode, .trash_mode .signature-nav-trash_mode:visited {
+  color: rgba(255,255,255,1);
+}
 
 .signature-nav-btn.signature-nav-btn-first {
   border-left: 1px dashed #fff;
