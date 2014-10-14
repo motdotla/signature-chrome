@@ -10,14 +10,15 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
     CLICK               = "touchend";
   }
   var EDIT_MODE = "edit_mode";
-  var DONE_MODE = "done_mode";
+  var CONFIRMATION_MODE = "confirmation_mode";
   var TEXT_MODE = "text_mode";
   var SIGN_MODE = "sign_mode";
   var TRASH_MODE = "trash_mode";
-  var EVENT_DONE_MODE_CLICKED = "signature_chrome"+DONE_MODE+".clicked";
+  var EVENT_CONFIRMATION_MODE_CLICKED = "signature_chrome"+CONFIRMATION_MODE+".clicked";
   var EVENT_TEXT_MODE_CLICKED = "signature_chrome"+TEXT_MODE+".clicked";
   var EVENT_SIGN_MODE_CLICKED = "signature_chrome"+SIGN_MODE+".clicked";
   var EVENT_TRASH_MODE_CLICKED = "signature_chrome"+TRASH_MODE+".clicked";
+  var EVENT_CONFIRMATION_NO_CLICKED = "signature_chrome.confirmation_no.clicked";
   var EVENT_STATE_CHANGED = "signature_chrome.state.changed";
   var EVENT_TEXT = "signature_chrome.text";
   var EVENT_SIGNATURE = "signature_chrome.signature";
@@ -47,11 +48,11 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
 
   SignatureChrome.prototype._stateMachine = function(document_element) {
     var _this = this;
-    _this.jafja.bind(EVENT_DONE_MODE_CLICKED, function() {
-      if (_this.state == DONE_MODE) {
+    _this.jafja.bind(EVENT_CONFIRMATION_MODE_CLICKED, function() {
+      if (_this.state == CONFIRMATION_MODE) {
         _this.setState(document_element, EDIT_MODE);
       } else {
-        _this.setState(document_element, DONE_MODE);
+        _this.setState(document_element, CONFIRMATION_MODE);
       }
     });
     _this.jafja.bind(EVENT_TEXT_MODE_CLICKED, function() {
@@ -75,6 +76,9 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
         _this.setState(document_element, TRASH_MODE);
       }
     });
+    _this.jafja.bind(EVENT_CONFIRMATION_NO_CLICKED, function() {
+      _this.setState(document_element, EDIT_MODE);
+    });
   };
 
   SignatureChrome.prototype.init = function(document_element) {
@@ -82,6 +86,7 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
     this._drawCss();
     this._drawNav(document_element);
     this._drawDoneNav(document_element);
+    this._drawDoneConfirmation(document_element);
     this._watchStateAndChangeCss(document_element);
     this.setState(document_element, EDIT_MODE);
 
@@ -89,7 +94,7 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
 
     // event triggers
     this.done_mode_btn.addEventListener(CLICK, function() {
-      _this.jafja.trigger(EVENT_DONE_MODE_CLICKED, {}); 
+      _this.jafja.trigger(EVENT_CONFIRMATION_MODE_CLICKED, {}); 
     }, false);
     this.text_mode_btn.addEventListener(CLICK, function() {
       _this.jafja.trigger(EVENT_TEXT_MODE_CLICKED, {});
@@ -99,6 +104,10 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
     }, false);
     this.trash_mode_btn.addEventListener(CLICK, function() {
       _this.jafja.trigger(EVENT_TRASH_MODE_CLICKED, {});
+    }, false);
+    this.done_confirmation_no.addEventListener(CLICK, function() {
+      console.log("clicked");
+      _this.jafja.trigger(EVENT_CONFIRMATION_NO_CLICKED, {});
     }, false);
 
     signature_pad.bind('signature_pad.data_url', function(data_url) {
@@ -122,6 +131,29 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
 
 
     return document_element.appendChild(this.done_nav);
+  };
+
+  SignatureChrome.prototype._drawDoneConfirmation = function(document_element) {
+    this.done_confirmation                = document.createElement('div');
+    this.done_confirmation.className      = "signature-done-confirmation";
+
+    var done_confirmation_msg             = document.createElement('p');
+    done_confirmation_msg.className       = "signature-done-confirmation-msg";
+    done_confirmation_msg.innerHTML       = "Etes-vous sûr que vous avez terminé la signature?";
+
+    this.done_confirmation.appendChild(done_confirmation_msg);
+
+    this.done_confirmation_yes            = document.createElement('a');
+    this.done_confirmation_yes.className  = "signature-button signature-button-primary signature-done-confirmation-yes";
+    this.done_confirmation_yes.innerHTML  = "Oui";
+    this.done_confirmation.appendChild(this.done_confirmation_yes);
+
+    this.done_confirmation_no            = document.createElement('a');
+    this.done_confirmation_no.className  = "signature-button signature-done-confirmation-no";
+    this.done_confirmation_no.innerHTML  = "Pas";
+    this.done_confirmation.appendChild(this.done_confirmation_no);
+
+    return document_element.appendChild(this.done_confirmation);
   };
 
   SignatureChrome.prototype._drawNav = function(document_element) {
@@ -211,4 +243,4 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
 var signature_chrome = new SignatureChrome();
 
 
-(function(SignatureChrome){SignatureChrome.prototype._drawCss = function() {this.css = '@charset "utf-8";@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);.signature-pad{display:none}.signature-header{position:fixed;top:0;left:0;width:100%;z-index:2000}.signature-nav-span:before{line-height:43px;font-size:30px}.signature-nav{position:absolute;text-align:center;top:0;left:0;background:#E2E3E1;background:rgba(239,65,54,1);width:100%}.signature-no-list-style{padding:0;margin:0;list-style:none}.signature-nav li{display:inline-block}.signature-nav-btn{font-size:18px;color:rgba(255,255,255,1);display:inline-block;height:44px;width:60px;text-decoration:none;text-transform:uppercase;text-align:center;line-height:44px;border-right:1px dashed #fff;border-top:none;border-bottom:none;cursor:pointer}.text_mode .signature-nav-text_mode,.text_mode .signature-nav-text_mode:visited{color:#fff;background:#222}.sign_mode .signature-nav-sign_mode,.sign_mode .signature-nav-sign_mode:visited{color:#fff;background:#222}.signature-nav-btn.signature-nav-btn-first{border-left:1px dashed #fff}.signature-nav-disabled,.signature-nav-disabled:visited{color:rgba(255,255,255,0.5)}.signature-nav-active,.signature-nav-active:visited{color:#fff;background:#222}.signature-done-button{font-size:24px;border-radius:2px 2px 0 0}.signature-done-nav{position:fixed;text-align:center;bottom:0;right:0;width:100%;z-index:2000}.signature-nav a,.signature-nav a:visited{}.signature-button{display:inline-block;*display:inline;zoom:1;line-height:normal;white-space:nowrap;vertical-align:baseline;text-align:center;cursor:pointer;-webkit-user-drag:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.signature-button::-moz-focus-inner{padding:0;border:0}.signature-button{font-size:100%;*font-size:90%;*overflow:visible;padding:0.5em 1.5em 0.5em;color:#444;color:rgba(0,0,0,0.80);*color:#444;border:1px solid #999;border:none rgba(0,0,0,0);background-color:#E6E6E6;text-decoration:none;border-radius:2px;-webkit-font-smoothing:antialiased;-webkit-transition:0.1s linear -webkit-box-shadow;-moz-transition:0.1s linear -moz-box-shadow;-ms-transition:0.1s linear box-shadow;-o-transition:0.1s linear box-shadow;transition:0.1s linear box-shadow}.signature-button-hover,.signature-button:hover{filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#00000000",endColorstr="#00000000",GradientType=0);background-image:-webkit-gradient(linear,0 0,0 100%,from(transparent),color-stop(40%,rgba(0,0,0,0.05)),to(rgba(0,0,0,0.05)));background-image:-webkit-linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.15));background-image:-moz-linear-gradient(top,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.05));background-image:-ms-linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.15));background-image:-o-linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.05));background-image:linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.05))}.signature-button-active,.signature-button:active{box-shadow:0 0 0 1px rgba(0,0,0,0.15) inset,0 0 6px rgba(0,0,0,0.20) inset}.signature-button[disabled],.signature-button-disabled,.signature-button-disabled:hover,.signature-button-disabled:active{border:none;background-image:none;filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);filter:alpha(opacity=40);-khtml-opacity:0.40;-moz-opacity:0.40;opacity:0.40;cursor:not-allowed;box-shadow:none}.signature-button-hidden{display:none}.signature-button::-moz-focus-inner{padding:0;border:0}.signature-button-primary,a.signature-button-primary{background:rgba(239,65,54,1);color:#fff}.signature-button:-moz-focusring{outline-color:rgba(0,0,0,0.85)}.signature-hidden{display:none}';var style = document.createElement('style');style.type = 'text/css';if (style.styleSheet) {style.styleSheet.cssText = this.css;} else {style.appendChild(document.createTextNode(this.css));}return document.body.appendChild(style);};}(SignatureChrome));
+(function(SignatureChrome){SignatureChrome.prototype._drawCss = function() {this.css = '@charset "utf-8";@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);.signature-pad{display:none}.signature-header{position:fixed;top:0;left:0;width:100%;z-index:2000}.signature-nav-span:before{line-height:43px;font-size:30px}.signature-nav{position:absolute;text-align:center;top:0;left:0;background:#E2E3E1;background:rgba(239,65,54,1);width:100%}.signature-no-list-style{padding:0;margin:0;list-style:none}.signature-nav li{display:inline-block}.signature-nav-btn{font-size:18px;color:rgba(255,255,255,1);display:inline-block;height:44px;width:60px;text-decoration:none;text-transform:uppercase;text-align:center;line-height:44px;border-right:1px dashed #fff;border-top:none;border-bottom:none;cursor:pointer}.text_mode .signature-nav-text_mode,.text_mode .signature-nav-text_mode:visited{color:#fff;background:#222}.sign_mode .signature-nav-sign_mode,.sign_mode .signature-nav-sign_mode:visited{color:#fff;background:#222}.signature-nav-btn.signature-nav-btn-first{border-left:1px dashed #fff}.signature-nav-disabled,.signature-nav-disabled:visited{color:rgba(255,255,255,0.5)}.signature-nav-active,.signature-nav-active:visited{color:#fff;background:#222}.signature-done-button{font-size:24px;border-radius:2px 2px 0 0}.signature-done-nav{position:fixed;text-align:center;bottom:0;right:0;width:100%;z-index:2000}.signature-nav a,.signature-nav a:visited{}.confirmation_mode .signature-done-confirmation{display:block}.edit_mode .signature-done-confirmation{display:none}.signature-done-confirmation{display:none;z-index:2010;background:rgba(255,255,255,0.9);width:100%;height:100%;position:fixed;top:0;left:0;text-align:center}.signature-done-confirmation-msg{font-size:300%;color:#000;margin-top:10px}.signature-done-confirmation-yes,.signature-done-confirmation-no{font-size:24px;margin:20px}.signature-button{display:inline-block;*display:inline;zoom:1;line-height:normal;white-space:nowrap;vertical-align:baseline;text-align:center;cursor:pointer;-webkit-user-drag:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.signature-button::-moz-focus-inner{padding:0;border:0}.signature-button{font-size:100%;*font-size:90%;*overflow:visible;padding:0.5em 1.5em 0.5em;color:#444;color:rgba(0,0,0,0.80);*color:#444;border:1px solid #999;border:none rgba(0,0,0,0);background-color:#E6E6E6;text-decoration:none;border-radius:2px;-webkit-font-smoothing:antialiased;-webkit-transition:0.1s linear -webkit-box-shadow;-moz-transition:0.1s linear -moz-box-shadow;-ms-transition:0.1s linear box-shadow;-o-transition:0.1s linear box-shadow;transition:0.1s linear box-shadow}.signature-button-hover,.signature-button:hover{filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#00000000",endColorstr="#00000000",GradientType=0);background-image:-webkit-gradient(linear,0 0,0 100%,from(transparent),color-stop(40%,rgba(0,0,0,0.05)),to(rgba(0,0,0,0.05)));background-image:-webkit-linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.15));background-image:-moz-linear-gradient(top,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.05));background-image:-ms-linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.15));background-image:-o-linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.05));background-image:linear-gradient(transparent,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.05))}.signature-button-active,.signature-button:active{box-shadow:0 0 0 1px rgba(0,0,0,0.15) inset,0 0 6px rgba(0,0,0,0.20) inset}.signature-button[disabled],.signature-button-disabled,.signature-button-disabled:hover,.signature-button-disabled:active{border:none;background-image:none;filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);filter:alpha(opacity=40);-khtml-opacity:0.40;-moz-opacity:0.40;opacity:0.40;cursor:not-allowed;box-shadow:none}.signature-button-hidden{display:none}.signature-button::-moz-focus-inner{padding:0;border:0}.signature-button-primary,a.signature-button-primary{background:rgba(239,65,54,1);color:#fff}.signature-button:-moz-focusring{outline-color:rgba(0,0,0,0.85)}.signature-hidden{display:none}';var style = document.createElement('style');style.type = 'text/css';if (style.styleSheet) {style.styleSheet.cssText = this.css;} else {style.appendChild(document.createTextNode(this.css));}return document.body.appendChild(style);};}(SignatureChrome));

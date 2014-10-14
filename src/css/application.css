@@ -82,6 +82,32 @@
 }
 .signature-nav a, .signature-nav a:visited{
 }
+.confirmation_mode .signature-done-confirmation {
+  display: block;
+}
+.edit_mode .signature-done-confirmation {
+  display: none;
+}
+.signature-done-confirmation { 
+  display: none;
+  z-index: 2010; 
+  background: rgba(255,255,255,0.9); 
+  width: 100%;
+  height: 100%; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  text-align: center;
+}
+.signature-done-confirmation-msg { 
+  font-size: 300%; 
+  color: #000;
+  margin-top: 10px;
+}
+.signature-done-confirmation-yes, .signature-done-confirmation-no { 
+  font-size: 24px;
+  margin: 20px;
+}
 
 /* Buttons */
 .signature-button {

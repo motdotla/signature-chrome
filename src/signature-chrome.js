@@ -6,14 +6,15 @@
     CLICK               = "touchend";
   }
   var EDIT_MODE = "edit_mode";
-  var DONE_MODE = "done_mode";
+  var CONFIRMATION_MODE = "confirmation_mode";
   var TEXT_MODE = "text_mode";
   var SIGN_MODE = "sign_mode";
   var TRASH_MODE = "trash_mode";
-  var EVENT_DONE_MODE_CLICKED = "signature_chrome"+DONE_MODE+".clicked";
+  var EVENT_CONFIRMATION_MODE_CLICKED = "signature_chrome"+CONFIRMATION_MODE+".clicked";
   var EVENT_TEXT_MODE_CLICKED = "signature_chrome"+TEXT_MODE+".clicked";
   var EVENT_SIGN_MODE_CLICKED = "signature_chrome"+SIGN_MODE+".clicked";
   var EVENT_TRASH_MODE_CLICKED = "signature_chrome"+TRASH_MODE+".clicked";
+  var EVENT_CONFIRMATION_NO_CLICKED = "signature_chrome.confirmation_no.clicked";
   var EVENT_STATE_CHANGED = "signature_chrome.state.changed";
   var EVENT_TEXT = "signature_chrome.text";
   var EVENT_SIGNATURE = "signature_chrome.signature";
@@ -43,11 +44,11 @@
 
   SignatureChrome.prototype._stateMachine = function(document_element) {
     var _this = this;
-    _this.jafja.bind(EVENT_DONE_MODE_CLICKED, function() {
-      if (_this.state == DONE_MODE) {
+    _this.jafja.bind(EVENT_CONFIRMATION_MODE_CLICKED, function() {
+      if (_this.state == CONFIRMATION_MODE) {
         _this.setState(document_element, EDIT_MODE);
       } else {
-        _this.setState(document_element, DONE_MODE);
+        _this.setState(document_element, CONFIRMATION_MODE);
       }
     });
     _this.jafja.bind(EVENT_TEXT_MODE_CLICKED, function() {
@@ -71,6 +72,9 @@
         _this.setState(document_element, TRASH_MODE);
       }
     });
+    _this.jafja.bind(EVENT_CONFIRMATION_NO_CLICKED, function() {
+      _this.setState(document_element, EDIT_MODE);
+    });
   };
 
   SignatureChrome.prototype.init = function(document_element) {
@@ -78,6 +82,7 @@
     this._drawCss();
     this._drawNav(document_element);
     this._drawDoneNav(document_element);
+    this._drawDoneConfirmation(document_element);
     this._watchStateAndChangeCss(document_element);
     this.setState(document_element, EDIT_MODE);
 
@@ -85,7 +90,7 @@
 
     // event triggers
     this.done_mode_btn.addEventListener(CLICK, function() {
-      _this.jafja.trigger(EVENT_DONE_MODE_CLICKED, {}); 
+      _this.jafja.trigger(EVENT_CONFIRMATION_MODE_CLICKED, {}); 
     }, false);
     this.text_mode_btn.addEventListener(CLICK, function() {
       _this.jafja.trigger(EVENT_TEXT_MODE_CLICKED, {});
@@ -95,6 +100,9 @@
     }, false);
     this.trash_mode_btn.addEventListener(CLICK, function() {
       _this.jafja.trigger(EVENT_TRASH_MODE_CLICKED, {});
+    }, false);
+    this.done_confirmation_no.addEventListener(CLICK, function() {
+      _this.jafja.trigger(EVENT_CONFIRMATION_NO_CLICKED, {});
     }, false);
 
     signature_pad.bind('signature_pad.data_url', function(data_url) {
@@ -118,6 +126,29 @@
 
 
     return document_element.appendChild(this.done_nav);
+  };
+
+  SignatureChrome.prototype._drawDoneConfirmation = function(document_element) {
+    this.done_confirmation                = document.createElement('div');
+    this.done_confirmation.className      = "signature-done-confirmation";
+
+    var done_confirmation_msg             = document.createElement('p');
+    done_confirmation_msg.className       = "signature-done-confirmation-msg";
+    done_confirmation_msg.innerHTML       = "i8n.done_confirmation_msg";
+
+    this.done_confirmation.appendChild(done_confirmation_msg);
+
+    this.done_confirmation_yes            = document.createElement('a');
+    this.done_confirmation_yes.className  = "signature-button signature-button-primary signature-done-confirmation-yes";
+    this.done_confirmation_yes.innerHTML  = "i8n.yes";
+    this.done_confirmation.appendChild(this.done_confirmation_yes);
+
+    this.done_confirmation_no            = document.createElement('a');
+    this.done_confirmation_no.className  = "signature-button signature-done-confirmation-no";
+    this.done_confirmation_no.innerHTML  = "i8n.no";
+    this.done_confirmation.appendChild(this.done_confirmation_no);
+
+    return document_element.appendChild(this.done_confirmation);
   };
 
   SignatureChrome.prototype._drawNav = function(document_element) {
