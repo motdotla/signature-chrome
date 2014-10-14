@@ -14,10 +14,10 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
   var TEXT_MODE = "text_mode";
   var SIGN_MODE = "sign_mode";
   var TRASH_MODE = "trash_mode";
-  var EVENT_CONFIRMATION_MODE_CLICKED = "signature_chrome"+CONFIRMATION_MODE+".clicked";
-  var EVENT_TEXT_MODE_CLICKED = "signature_chrome"+TEXT_MODE+".clicked";
-  var EVENT_SIGN_MODE_CLICKED = "signature_chrome"+SIGN_MODE+".clicked";
-  var EVENT_TRASH_MODE_CLICKED = "signature_chrome"+TRASH_MODE+".clicked";
+  var EVENT_CONFIRMATION_MODE_CLICKED = "signature_chrome."+CONFIRMATION_MODE+".clicked";
+  var EVENT_TEXT_MODE_CLICKED = "signature_chrome."+TEXT_MODE+".clicked";
+  var EVENT_SIGN_MODE_CLICKED = "signature_chrome."+SIGN_MODE+".clicked";
+  var EVENT_TRASH_MODE_CLICKED = "signature_chrome."+TRASH_MODE+".clicked";
   var EVENT_CONFIRMATION_NO_CLICKED = "signature_chrome.confirmation_no.clicked";
   var EVENT_STATE_CHANGED = "signature_chrome.state.changed";
   var EVENT_TEXT = "signature_chrome.text";
