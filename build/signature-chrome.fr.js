@@ -168,7 +168,7 @@ var MicroEvent=function(){};MicroEvent.prototype={bind:function(a,b){this._event
 
     var signed_msg             = document.createElement('p');
     signed_msg.className       = "signature-signed-msg";
-    signed_msg.innerHTML       = "This document has been signed already.";
+    signed_msg.innerHTML       = "This document has been signed.";
 
     this.signed.appendChild(signed_msg);
 
