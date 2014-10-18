@@ -29,6 +29,7 @@ module.exports = (grunt) ->
     src = original_src
     src = src.replace "i8n.done_confirmation_msg", i8n.done_confirmation_msg
     src = src.replace "i8n.done_msg", i8n.done_msg
+    src = src.replace "i8n.signed_msg", i8n.signed_msg
     src = src.replace "i8n.done", i8n.done
     src = src.replace "i8n.yes", i8n.yes
     src = src.replace "i8n.no", i8n.no

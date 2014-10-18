@@ -10,11 +10,13 @@
   var TEXT_MODE = "text_mode";
   var SIGN_MODE = "sign_mode";
   var TRASH_MODE = "trash_mode";
+  var SIGNED_MODE = "signed_mode";
   var EVENT_CONFIRMATION_MODE_CLICKED = "signature_chrome."+CONFIRMATION_MODE+".clicked";
   var EVENT_TEXT_MODE_CLICKED = "signature_chrome."+TEXT_MODE+".clicked";
   var EVENT_SIGN_MODE_CLICKED = "signature_chrome."+SIGN_MODE+".clicked";
   var EVENT_TRASH_MODE_CLICKED = "signature_chrome."+TRASH_MODE+".clicked";
   var EVENT_CONFIRMATION_NO_CLICKED = "signature_chrome.confirmation_no.clicked";
+  var EVENT_CONFIRMATION_YES_CLICKED = "signature_chrome.confirmation_yes.clicked";
   var EVENT_STATE_CHANGED = "signature_chrome.state.changed";
   var EVENT_TEXT = "signature_chrome.text";
   var EVENT_SIGNATURE = "signature_chrome.signature";
@@ -71,6 +73,9 @@
     _this.jafja.bind(EVENT_CONFIRMATION_NO_CLICKED, function() {
       _this.setState(document_element, EDIT_MODE);
     });
+    _this.jafja.bind(EVENT_CONFIRMATION_YES_CLICKED, function() {
+      _this.setState(document_element, SIGNED_MODE);
+    });
   };
 
   SignatureChrome.prototype.init = function(document_element) {
@@ -79,6 +84,7 @@
     this._drawNav(document_element);
     this._drawDoneNav(document_element);
     this._drawDoneConfirmation(document_element);
+    this._drawSigned(document_element);
     this._watchStateAndChangeCss(document_element);
     this.setState(document_element, EDIT_MODE);
 
@@ -101,6 +107,9 @@
     }, false);
     this.done_confirmation_no.addEventListener(CLICK, function() {
       _this.jafja.trigger(EVENT_CONFIRMATION_NO_CLICKED, {});
+    }, false);
+    this.done_confirmation_yes.addEventListener(CLICK, function() {
+      _this.jafja.trigger(EVENT_CONFIRMATION_YES_CLICKED, {});
     }, false);
 
     signature_pad.bind('signature_pad.data_url', function(data_url) {
@@ -147,6 +156,19 @@
     this.done_confirmation.appendChild(this.done_confirmation_no);
 
     return document_element.appendChild(this.done_confirmation);
+  };
+
+  SignatureChrome.prototype._drawSigned = function(document_element) {
+    this.signed                = document.createElement('div');
+    this.signed.className      = "signature-signed";
+
+    var signed_msg             = document.createElement('p');
+    signed_msg.className       = "signature-signed-msg";
+    signed_msg.innerHTML       = "i8n.signed_msg";
+
+    this.signed.appendChild(signed_msg);
+
+    return document_element.appendChild(this.signed);
   };
 
   SignatureChrome.prototype._drawNav = function(document_element) {

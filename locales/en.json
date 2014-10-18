@@ -1,6 +1,7 @@
 {
   "done_confirmation_msg": "Are you sure you are done signing?",
   "done_msg": "Completed",
+  "signed_msg": "This document has been signed already.",
   "done": "Done",
   "yes": "Yes",
   "no": "No",

@@ -94,6 +94,9 @@
 .edit_mode .signature-done-confirmation {
   display: none;
 }
+.signed_mode .signature-signed {
+  display: none;
+}
 .signature-done-confirmation { 
   display: none;
   z-index: 2010; 
@@ -113,6 +116,31 @@
 .signature-done-confirmation-yes, .signature-done-confirmation-no { 
   font-size: 24px;
   margin: 20px;
+}
+.signed_mode .signature-signed {
+  display: block;
+}
+.edit_mode .signature-signed {
+  display: none;
+}
+.confirmation_mode .signature-signed {
+  display: none;
+}
+.signature-signed { 
+  display: none;
+  z-index: 2020; 
+  background: rgba(255,255,255,0.9); 
+  width: 100%;
+  height: 100%; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  text-align: center;
+}
+.signature-signed-msg { 
+  font-size: 300%; 
+  color: #000;
+  margin-top: 10px;
 }
 
 /* Buttons */

@@ -36,6 +36,12 @@ signature_chrome.promptText();
 signature_chrome.promptSignature();
 ```
 
+### setState(document_element, new_state)
+
+```javascript
+signature_chrome.setState(signature_document.document, "trash_mode");
+```
+
 ### jafja
 
 ```javascript
@@ -102,4 +108,22 @@ jafja.bind('signature_chrome.sign_mode.clicked', function(result) {
 jafja.bind('signature_chrome.trash_mode.clicked', function(result) {
   console.log('signature_chrome.trash_mode.clicked', result);
 });
+```
+
+#### signature_chrome.confirmation_no.clicked
+
+```javascript
+jafja.bind('signature_chrome.confirmation_no.clicked', function(result) {
+  console.log('signature_chrome.confirmation_no.clicked', result);
+});
+
+```
+
+#### signature_chrome.confirmation_yes.clicked
+
+```javascript
+jafja.bind('signature_chrome.confirmation_yes.clicked', function(result) {
+  console.log('signature_chrome.confirmation_yes.clicked', result);
+});
+
 ```
